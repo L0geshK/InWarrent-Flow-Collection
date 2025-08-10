@@ -1,0 +1,37 @@
+name: Postman API Test Case
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - corn : 30 2 * * *
+    - corn : 30 12 * * *
+
+jobs:
+  run-postman-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.9.1
+        with:
+          node -version: 22
+
+      - name: Newman - Postman
+        run: npm install -g newman && npm install -g newman-reporter-htmlextra
+
+      - name: Run the postman collection with newmann
+        run: |
+            newman run Inwarranty-flow\ Collection.postman_collection.json -e QA.postman_environment.json -r cli,html,htlmextra -d testdata.csv
+
+        
+        
+        
+      
+      
+    
+    
